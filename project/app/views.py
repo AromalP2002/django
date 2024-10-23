@@ -77,3 +77,12 @@ def q6(request,a):
             ui=a-200
             us=ui*10+500
             return HttpResponse(us)
+def fun1(req):
+    print('hallo')
+    return HttpResponse("welcome")
+def fun2(req,a,b):
+    # print(type(a))
+    return HttpResponse(a,b)
+def demo(req):
+    a={'name':'abc','age':22}
+    return render(req,'demo.html',{'data':a})
