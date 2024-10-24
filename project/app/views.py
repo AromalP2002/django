@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 # Create your views here.
@@ -84,5 +84,22 @@ def fun2(req,a,b):
     # print(type(a))
     return HttpResponse(a,b)
 def demo(req):
-    a={'name':'abc','age':22}
+    a={'name':'abc','age':22},{'name':'bbb','age':22},{'name':'ccc','age':23}
     return render(req,'demo.html',{'data':a})
+
+users=[{'id':'21','name':'abc','age':22,'email':'abc@gmail'},{'id':'22','name':'bbb','age':23,'email':'bbb@email'},{'id':'23','name':'ccc','age':23,'email':'ccc@email'}]
+
+def display(req):
+    return render(req,'display_user.html',{'users':users})
+
+def user_reg(req):
+    if req.method=='POST':
+        id=req.POST['id']
+        name=req.POST['name']
+        age=req.POST['age']
+        email=req.POST['email']
+        users.append({'id':id,'name':name,'age':age,'email':email})
+        return redirect(display)
+    else:
+        print(req.method)
+        return redirect(display)
