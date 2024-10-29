@@ -29,5 +29,6 @@ urlpatterns = [
     path('q4/<int:a>',views.q4),
     path('q5/<int:a>',views.q5),
     path('q6/<int:a>',views.q6),
+    path('disp_std',views.display_std)
 
 ]

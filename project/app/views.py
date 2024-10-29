@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
+from .models import student
 # Create your views here.
 def demo(request):
     return HttpResponse("welcome")
@@ -124,4 +124,9 @@ def delete_user(req,id):
     for i in users:
         if i ['id']==id:
             users.remove(i)
-    return redirect(display)      
+    return redirect(display)  
+
+
+def display_std(req):
+    data=student.objects.all()
+    return render(req,"display_std.html",{'std':data})
