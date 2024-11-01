@@ -10,6 +10,7 @@ urlpatterns=[
 
 
     path('shop_home',views.shop_home),
+    path('add_product',views.add_product),
 
 
 
