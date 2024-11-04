@@ -23,7 +23,8 @@ def shop_logout(req):
     return redirect(shop_login)
 def shop_home(req):
     if 'shop' in req.session:
-        return render(req,'shop/home.html')
+        data=product.objects.all()[::-1][:10]
+        return render(req,'shop/home.html',{'product':data})
     else:
         return redirect(shop_login)
 def add_product(req):
@@ -43,4 +44,28 @@ def add_product(req):
             return render(req,'shop/add_product.html')
     else:
         return redirect(shop_login)
+def edit_product(req,paid):
+     if 'shop' in req.session:
+        if req.method=='POST':
+            id=req.POST['pro_id']
+            name=req.POST['name']
+            price=req.POST['Price']
+            offer_price=req.POST['Offer_price']
+            dis=req.POST['dis']
+            img=req.FILES['img']
+            if img:
+
+                product.objects.filter(pk=pid).update(pro_id=id,name=name,price=price,offer_price=offer_price,dis=dis,img=img)
+           
+        
+            else:
+                product.objects.filter(pk=pid).update(pro_id=id,name=name,price=price,offer_price=offer_price,dis=dis,img=img)
+
+            return redirect(shop_home)
+        else:
+         data=product.objects.get(pk=pid)
+         return render(req,'shop/edit.html',{'product':data})
+    else:
+        return redirect(shop_home)
+
     

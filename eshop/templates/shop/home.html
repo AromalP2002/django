@@ -33,8 +33,25 @@
                 </div>
                 </div>
               </nav>   
-
+              <div class="container">
+                <div class="row">
+                  {% for products in product %}
+               
+                <div class="col-lg-4">
+                  <div class="card"> 
+                  <img class="card-img-top" src="{{products.img.url}}" alt="Card image" style="width:100%">
+                  <div class="card-body">
+                    <h4 class="card-title">{{products.name}}</h4>
+                    <p class="card-text">{{products.dis}}</p>
+                    <a href="edit_product/{{product.pk}}" class="btn btn-primary">Edit</a>
+                    <a href="delect_product/{{product.pk}}" class="btn btn-primary">Delect</a>
+                  </div>
+                </div>
+                </div>
+               {% endfor %}
+                
    
-    <h1>shop home</h1>
+          </div>
+        </div>
 </body>
 </html>
