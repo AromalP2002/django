@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from . models import *
-
+import os
+from django.contrib.auth.models import User
+from django.contrib import messages
 # Create your views here.
 
 def shop_login(req):
@@ -15,11 +17,15 @@ def shop_login(req):
             login(req,data)
             req.session['shop']=uname
             return redirect(shop_home)
+        else:
+            messages.warning(req,"invalid uname or password")
+            return render(req,'login.html')
     else:
         return render(req,'login.html')
 def shop_logout(req):
     req.session.flush()
     logout(req)
+  
     return redirect(shop_login)
 def shop_home(req):
     if 'shop' in req.session:
@@ -44,8 +50,8 @@ def add_product(req):
             return render(req,'shop/add_product.html')
     else:
         return redirect(shop_login)
-def edit_product(req,paid):
-     if 'shop' in req.session:
+def edit_product(req,pid):
+    if 'shop' in req.session:
         if req.method=='POST':
             id=req.POST['pro_id']
             name=req.POST['name']
@@ -63,9 +69,35 @@ def edit_product(req,paid):
 
             return redirect(shop_home)
         else:
-         data=product.objects.get(pk=pid)
-         return render(req,'shop/edit.html',{'product':data})
+            data=product.objects.get(pk=pid)
+            return render(req,'shop/edit.html',{'product':data})
     else:
         return redirect(shop_home)
+
+def delect_product(req,pid):
+    data=product.objects.gets(pk=pid)
+    url=data.img.url
+    og_path=url.split('/')[-1]
+    os.remove ('media/'+og_path)
+    data.delect()
+    print(og_path)
+    return redirect(shop_home)  
+
+def register(req):
+    if req.method=='POST':
+        name=req.POST['name']
+        email=req.POST['email']
+        password=req.POST['password']
+        try:
+            data=User.objects.create_user(first_name=name,email=email,password=password,username=email)
+            data.save()
+            return redirect(shop_login)
+        except:
+            messages.warning(req,'email invalid')
+            return redirect(register)
+    else:
+        return render(req,'user/register.html')
+        
+
 
     
