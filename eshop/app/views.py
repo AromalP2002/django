@@ -9,14 +9,21 @@ from django.contrib import messages
 def shop_login(req):
     if 'shop' in req.session:
         return redirect(shop_home)
+    if 'user' in req.session:
+        return redirect(user_home)
     if req.method=='POST':
         uname=req.POST['uname']
         password=req.POST['pswd']
         data=authenticate(username=uname,password=password)
         if data:
-            login(req,data)
-            req.session['shop']=uname
-            return redirect(shop_home)
+            if data.is_superuser:
+                login(req,data)
+                req.session['shop']=uname
+                return redirect(shop_home)
+            else:
+                login(req,data)
+                req.session['user']=uname
+                return redirect(user_home)
         else:
             messages.warning(req,"invalid uname or password")
             return render(req,'login.html')
@@ -57,15 +64,15 @@ def edit_product(req,pid):
             name=req.POST['name']
             price=req.POST['Price']
             offer_price=req.POST['Offer_price']
-            dis=req.POST['dis']
+            disp=req.POST['disp']
             img=req.FILES['img']
             if img:
 
-                product.objects.filter(pk=pid).update(pro_id=id,name=name,price=price,offer_price=offer_price,dis=dis,img=img)
+                product.objects.filter(pk=pid).update(pro_id=id,name=name,price=price,offer_price=offer_price,dis=disp,img=img)
            
         
             else:
-                product.objects.filter(pk=pid).update(pro_id=id,name=name,price=price,offer_price=offer_price,dis=dis,img=img)
+                product.objects.filter(pk=pid).update(pro_id=id,name=name,price=price,offer_price=offer_price,dis=disp,img=img)
 
             return redirect(shop_home)
         else:
@@ -97,6 +104,18 @@ def register(req):
             return redirect(register)
     else:
         return render(req,'user/register.html')
+    
+def user_home(req):
+    if 'user' in req.session:
+        data=product.objects.all()
+        return render(req,'user/home.html',{'data':data})
+    else:
+        return redirect(shop_login)
+    
+def view_pro(req,pid):
+        data=product.objects.get(pk=pid)
+        return render(req,'user/view_pro.html',{'data':data})
+        
         
 
 
