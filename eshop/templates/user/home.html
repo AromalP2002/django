@@ -37,6 +37,7 @@
                   {% for products in data %}
                
                 <div class="col-lg-4">
+                  <a href="view_pro/{{products.pk}}">
                   <div class="card"> 
                   <img class="card-img-top" src="{{products.img.url}}" alt="Card image" style="width:100%">
                   <div class="card-body">
@@ -45,6 +46,8 @@
 
                   </div>
                 </div>
+                
+                  </a>
                 </div>
                {% endfor %}
                 

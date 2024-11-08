@@ -7,7 +7,7 @@
     {% load static %}
 </head>
 <body>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table></table>
         <input type="text" name="uname" id="" placeholder="username">
