@@ -90,6 +90,13 @@ def delect_product(req,pid):
     print(og_path)
     return redirect(shop_home)  
 
+
+def  booking(req):
+    buy=Buy.objects.all()[::-1]
+    return render(req,'shop/booking.html',{'buy':buy})
+
+#--------------------user-------------------#
+
 def register(req):
     if req.method=='POST':
         name=req.POST['name']
@@ -131,23 +138,29 @@ def delete_cart(req,id):
     cart=cart.objects.get(pk=id)
     cart.delect()
     return redirect(view_cart) 
+#cart buy
 
 def user_buy(req,cid):
     user=User.objects.get(username=req.session['user'])
-    cart=cart.objects.get(pk=cid)
+    cartt=cart.objects.get(pk=cid)
     product=cart.Product
-    price=cart.product.offer_price
+    price=cartt.product.offer_price
     buy=Buy.objects.create(user=user,product=product,price=price)
     buy.save()
     return redirect(view_cart)
+#product buy
 
 def user_buy1(req,pid):
     user=user.objects.get(username=req.session['user'])
-    product=product.objects.get(pk=pid)
+    prodct=product.objects.get(pk=pid)
     price=product.offer_price
-    buy=Buy.objects.create(user=user,product=product,price=price)
+    buy=Buy.objects.create(user=user,product=prodct,price=price)
     buy.save()
     return redirect(user_home)
+def  user_booking(req):
+    user=User.objects.get(username=req.session['user'])
+    buy=Buy.objects.filter(user=user)[::-1]
+    return render(req,'user/booking.html',{'buy':buy})
 
 
 
