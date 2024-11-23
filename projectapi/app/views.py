@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse,HttpResponse
+from rest_framework.response import Response
 from .serializers import *
 from . models import *
 from rest_framework.parsers import JSONParser
@@ -131,7 +132,7 @@ class fun8(APIView):
         except student.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-class genericapiview(generics.GenericAPIView,mixins.ListModelMixins,mixins.CreateModelMixin):
+class genericapiview(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
     serializer_class=model_serializer
     queryset=student.objects.all()
     def get(self,req):
@@ -140,7 +141,7 @@ class genericapiview(generics.GenericAPIView,mixins.ListModelMixins,mixins.Creat
         return self.create(req)
     
 
-class update(generics.GenericAPIView,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+class update(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
     serializer_class=model_serializer
     queryset=student.objects.all()
     lookup_field='id'
